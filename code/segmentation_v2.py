@@ -9,7 +9,7 @@ import torch.optim as optim
 from sklearn.metrics import classification_report, confusion_matrix, f1_score, accuracy_score
 
 import segmentation_loader
-from gnn_v3 import Action_GNN, Body_GNN
+from gnn import Action_GNN, Body_GNN
 import SupConLoss, barlow 
 from tmse import _GaussianSimilarityTMSE, _BoundaryRegressionLoss
 from torch.nn.utils import spectral_norm

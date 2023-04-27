@@ -10,7 +10,7 @@ from sklearn.metrics import classification_report, confusion_matrix, f1_score, a
 import loader
 '''
 '''
-from gnn_v3 import Action_GNN, Body_GNN, GNN_classifier
+from gnn import Action_GNN, Body_GNN, GNN_classifier
 import SupConLoss, barlow 
 
 from torch.utils.tensorboard import SummaryWriter
