@@ -1,5 +1,5 @@
 import argparse, os, torch, inspect
-from segmentation_v2 import Pretrain
+from segmentation import Pretrain
 from util import str2bool
 import pandas as pd
 
@@ -11,7 +11,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--root_dir', type=str, default="/home/dilab/data/etri/daywise")
     
-    parser.add_argument('--save_file_path', type=str, default="./share/conbarlow_gin") 
+    parser.add_argument('--save_file_path', type=str, default="./pretrained_model/model/") 
     parser.add_argument('--body_spatio_file', type=str, default="body_spatio_50epoch.pth") 
     parser.add_argument('--action_spatio_file', type=str, default="action_spatio_50epoch.pth")
     parser.add_argument('--linear_file', type=str, default="linear_50epoch.pth") 

@@ -1,5 +1,5 @@
 import argparse, os, torch, inspect
-from pretrain_barlow import Pretrain
+from pretrain import Pretrain
 from util import str2bool
 import pandas as pd
 

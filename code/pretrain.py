@@ -8,10 +8,9 @@ import torch.nn as nn
 import torch.optim as optim
 from sklearn.metrics import classification_report, confusion_matrix, f1_score, accuracy_score
 import loader
-'''
-'''
-from gnn import Action_GNN, Body_GNN, GNN_classifier
-import SupConLoss, barlow 
+import barlow
+from gnn import Action_GNN, Body_GNN
+
 
 from torch.utils.tensorboard import SummaryWriter
 import time
@@ -25,7 +24,7 @@ torch.cuda.manual_seed(0)
 
 class Pretrain(object):
     def __init__(self, args):
-        with open('config.yaml','r') as ymlfile:
+        with open('./code/config.yaml','r') as ymlfile:
             cfg = yaml.full_load(ymlfile) 
 
         self.seed = args.seed 
@@ -46,7 +45,7 @@ class Pretrain(object):
         self.p = args.p  
         self.barlow_epoch = args.barlow_epoch
                
-        self.train_loader = loader.dataloader(root_dir = self.train_dir,  batch_size = self.batch_size)
+        self.train_loader = loader.dataloader(root_dir = self.train_dir,  batch_size = self.batch_size, mode = 'pretrain')
 
         self.action_edge = cfg['action_edge']
         self.action_edge = torch.tensor(self.action_edge, dtype=torch.long).t().contiguous().to(self.device)
@@ -65,7 +64,6 @@ class Pretrain(object):
 
         self.action_spatio = Action_GNN(num_nodes = self.action_nodes, kernel_size = self.action_kernel_size, out_channels = self.action_gnn_outputdim, device=self.device).to(self.device)
         self.body_spatio = Body_GNN(num_nodes = self.body_nodes, kernel_size = self.body_kernel_size, out_channels = self.body_gnn_outputdim, device=self.device).to(self.device)
-        self.classifier = GNN_classifier(self.action_gnn_outputdim + self.body_gnn_outputdim, self.classes).to(self.device)
         self.linear = nn.Linear(self.action_gnn_outputdim + self.body_gnn_outputdim, self.classes).to(self.device)
         
         print('MODEL NETWORK')
@@ -73,8 +71,6 @@ class Pretrain(object):
         print(self.action_spatio)
         print('------------------BODY SPATIO GNN------------------')
         print(self.body_spatio)
-        print('------------------GNN Classifier------------------')
-        print(self.classifier)
         print('------------------LINEAR MODEL------------------')
         print(self.linear)
         print('------------------------------------------------------')
@@ -141,7 +137,6 @@ class Pretrain(object):
 
                 nn.utils.clip_grad_norm_(self.action_spatio.parameters(),3)
                 nn.utils.clip_grad_norm_(self.body_spatio.parameters(),3)
-                nn.utils.clip_grad_norm_(self.classifier.parameters(),3)
 
 
                 self.optimizer.step()
@@ -156,7 +151,6 @@ class Pretrain(object):
                             constraint_ma = self.alpha * constraint_ma.detach_() + (1 - self.alpha) * constraint
                         if iter % self.lbd_step == 0 :
                             self.lambd *= torch.clamp(torch.exp(constraint_ma), 0.9, 1.05)
-
                 if (iter+1) % 5 == 0:
                     if epoch>=self.barlow_epoch:
                         print(f'epoch {epoch+1} / {self.n_epoch}, step {iter+1}/{n_total_steps}, total loss = {loss.item():.4f}, ssl_loss = {constraint.item():.4f}, ce_loss = {loss_ce:.4f}')

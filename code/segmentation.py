@@ -8,15 +8,15 @@ import torch.nn as nn
 import torch.optim as optim
 from sklearn.metrics import classification_report, confusion_matrix, f1_score, accuracy_score
 
-import segmentation_loader
+import loader
 from gnn import Action_GNN, Body_GNN
-import SupConLoss, barlow 
+import barlow 
 from tmse import _GaussianSimilarityTMSE
 from torch.nn.utils import spectral_norm
 
 class Pretrain(object):
     def __init__(self, args):
-        with open('config.yaml','r') as ymlfile:
+        with open('./code/config.yaml','r') as ymlfile:
             cfg = yaml.full_load(ymlfile) 
 
         self.seed = args.seed 
@@ -46,8 +46,8 @@ class Pretrain(object):
         self.barlow_epoch = args.barlow_epoch
         self.pretrain_epoch = args.pretrain_epoch 
                
-        self.train_loader = segmentation_loader.dataloader(root_dir = self.train_dir,  batch_size = 1)
-        self.test_loader = segmentation_loader.dataloader(root_dir = self.test_dir, batch_size = 1)
+        self.train_loader = loader.dataloader(root_dir = self.train_dir,  batch_size = 1, mode = 'segmentation')
+        self.test_loader = loader.dataloader(root_dir = self.test_dir, batch_size = 1, mode = 'segmentation')
         print(self.test_loader.dataset.__len__())
 
         ##############
@@ -71,11 +71,10 @@ class Pretrain(object):
         self.linear = nn.Linear(self.action_gnn_outputdim + self.body_gnn_outputdim, self.classes).to(self.device)
         
         self.gaussian_tmse = _GaussianSimilarityTMSE()
-        self.boundary_loss = _BoundaryRegressionLoss()
 
         ###############
-        self.action_spatio.load_state_dict(torch.load(self.action_spatio_file))
-        self.body_spatio.load_state_dict(torch.load(self.body_spatio_file))
+        self.action_spatio.load_state_dict(torch.load(self.action_spatio_file), strict=False)
+        self.body_spatio.load_state_dict(torch.load(self.body_spatio_file), strict=False)
         self.linear.load_state_dict(torch.load(self.linear_file))
         self.criterion = nn.CrossEntropyLoss().to(self.device)
  
@@ -99,7 +98,7 @@ class Pretrain(object):
                 x2 = x2.type(torch.FloatTensor).squeeze(0).to(self.device) # action 
                 target = target1.type(torch.LongTensor).squeeze(0).to(self.device)
                 target2 = torch.LongTensor(target2).squeeze(0).to(self.device)
-                batch_loader = segmentation_loader.batchloader(x1, x2, target, target2, batch_size = self.batch_size)
+                batch_loader = loader.batchloader(x1, x2, target, target2, batch_size = self.batch_size, shuffle=False, drop_last = False)
                 print("x1:{}, x2:{}, target:{}".format(x1.shape, x2.shape, target.shape))
                 self.optimizer.zero_grad()
 
@@ -159,8 +158,7 @@ class Pretrain(object):
                 target2 = torch.LongTensor(target2).squeeze(0).to(self.device)
 
                 self.optimizer.zero_grad()
-                batch_loader = segmentation_loader.batchloader(x1, x2, target, target2, 
-                                                                batch_size = self.batch_size)               
+                batch_loader = loader.batchloader(x1, x2, target, target2, batch_size = self.batch_size, shuffle=False, drop_last = False)               
                     
                 for (b_x, b_x2, b_target, b_target2) in batch_loader:
                     body_out, body_pred = self.body_spatio(b_x, edge_index = self.body_edge) 
