@@ -11,10 +11,8 @@ from sklearn.metrics import classification_report, confusion_matrix, f1_score, a
 import segmentation_loader
 from gnn import Action_GNN, Body_GNN
 import SupConLoss, barlow 
-from tmse import _GaussianSimilarityTMSE, _BoundaryRegressionLoss
+from tmse import _GaussianSimilarityTMSE
 from torch.nn.utils import spectral_norm
-# torch.manual_seed(0)
-# torch.cuda.manual_seed(0)
 
 class Pretrain(object):
     def __init__(self, args):

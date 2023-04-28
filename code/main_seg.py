@@ -1,19 +1,29 @@
 import argparse, os, torch, inspect
-from pretrain_barlow import Pretrain
+from segmentation_v2 import Pretrain
 from util import str2bool
 import pandas as pd
 
 
 """parsing and configuration"""
 def parse_args():
+
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('--root_dir', type=str, default="/home/dilab/data/etri")
-    parser.add_argument('--batch_size', type=int, default=256)
+    parser.add_argument('--root_dir', type=str, default="/home/dilab/data/etri/daywise")
+    
+    parser.add_argument('--save_file_path', type=str, default="./share/conbarlow_gin") 
+    parser.add_argument('--body_spatio_file', type=str, default="body_spatio_50epoch.pth") 
+    parser.add_argument('--action_spatio_file', type=str, default="action_spatio_50epoch.pth")
+    parser.add_argument('--linear_file', type=str, default="linear_50epoch.pth") 
+
+    parser.add_argument('--batch_size', type=int, default=128) 
     parser.add_argument('--spt_lr', type=float, default=0.001)
+    parser.add_argument('--lambda_g', type=float, default=1)
     parser.add_argument('--p', type=float, default=0.1)
-    parser.add_argument('--barlow_epoch', type=int, default=0) # barlow constraint epoch 
-    parser.add_argument('--epoch', type=int, default=100)
-    parser.add_argument('--mode', type = str, default='conbarlow') ## 'supervised' , 'supconbarlow', 'supbarlow', 'conbarlow'
+    parser.add_argument('--pretrain_epoch', type=int, default=0)
+    parser.add_argument('--barlow_epoch', type=int, default=1) # barlow constraint epoch 
+    parser.add_argument('--epoch', type=int, default=10)
+    parser.add_argument('--mode', type = str, default='segmentation') 
     parser.add_argument('--device', type=str, default='cuda')
 
     parser.add_argument('--exp_name', type=str, default='etri')
@@ -21,7 +31,7 @@ def parse_args():
     parser.add_argument('--seed', type=int, default=0)
     parser.add_argument('--report_name', type=str, default='report.csv')
     parser.add_argument('--csv_save', type=str2bool, default=True)
-    parser.add_argument('--save_mode', type=str2bool, default=True)
+    parser.add_argument('--save_mode', type=str2bool, default=False)
     parser.add_argument('--save_root', type=str, default="saved_models")
 
 
@@ -39,7 +49,7 @@ def main():
     output.train()
 
     # if args.mode == 'supervised':
-    # acc, f1, class_f1 = output.test()
+    acc, f1, class_f1 = output.test()
 
 if __name__ == '__main__':
     main()
