@@ -56,6 +56,13 @@
 >
 > ```loader.py``` data loader (3.2.2의 loader와 동일)
 
+### Pretrained Model Share ("./pretrained_model/")
+> ```model/action_spatio_50epoch.pth``` action_spatio saved model
+>
+> ```model/body_spatio_50epoch.pth``` body_spatio saved model
+>
+> ```model/linear_50epoch.pth``` linear saved model
+
 ## 3.3 사용 방법
 ### 3.3.1 데이터 전처리
 Data는 [ETRI 라이프로그 데이터셋 (2020-2018)](https://nanum.etri.re.kr/share/schung1/ETRILifelogDataset2020?lang=ko_KR)를 활용한다. './data/original/'에 원본 데이터를 다운 받은후 preprocessing.py를 통해 전처리 이후 학습을 위한 디렉토리는 아래와 같다 ("./data/daywise/", "./data/timewise/".)
@@ -101,6 +108,7 @@ python ./code/main_pretrain.py --epoch 50 --root_dir ./data/timewise --mode conb
 ### 3.3.3 Lifelog Segmentation 모델 학습
 ```
 python ./code/main_seg.py --epoch 10 --root_dir ./data/daywise/train --mode segmentation --save_file_path <saved_pretrain_model_pth>
+
 # pretrained model/model로 돌리기
 python ./code/main-seg.py --epoch 10 --root_dir ./data/daywise/train --mode segmentation --save_file_path ./pretrained_model/model
 ```
