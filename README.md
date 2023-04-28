@@ -142,8 +142,8 @@ Eldele, Emadeldeen, et al. Time-series representation learning via temporal and 
 [5] Lishan Qiao, Limei Zhang, Songcan Chen, and Dinggang Shen. 2018. Data-driven graph construction and graph learning: A review. Neurocomputing 312 336-351, 2018.	
 
 [6] Zbontar, Jure, et al. Barlow twins: Self-supervised learning via redundancy reduction. International Conference on Machine Learning. PMLR, 2021.	
+[7] Jha, Abhishek, et al. "Barlow constrained optimization for Visual Question Answering." Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision. 2023.
 
-[7] Ishikawa, Yuchi, et al. Alleviating over-segmentation errors by detecting action boundaries. Proceedings of the IEEE/CVF winter conference on applications of computer vision. 2021.
+[8] Ishikawa, Yuchi, et al. Alleviating over-segmentation errors by detecting action boundaries. Proceedings of the IEEE/CVF winter conference on applications of computer vision. 2021.
 
-[8] M. Saquib Sarfraz, Vivek Sharma, and Rainer Stiefelhagen. Efficient parameter-free clustering using first neighbor relations. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pages 8934–8943, 2019.
-# ETRI_2023
+[9] M. Saquib Sarfraz, Vivek Sharma, and Rainer Stiefelhagen. Efficient parameter-free clustering using first neighbor relations. In Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR), pages 8934–8943, 2019.
