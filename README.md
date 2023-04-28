@@ -43,6 +43,7 @@
 > 
 > ```main_pretrain.py``` main 함수
 > 
+> ```loader.py``` data loader
 
 ### 3.2.3 Lifelog Segmentation Model ("./code/")
 > ```segmentation_loader.py``` Segmentation loader (daywise data)
@@ -52,6 +53,8 @@
 > ```tmse.py``` Temporal MSE 손실함수
 > 
 > ```main_seg.py``` main 함수
+>
+> ```loader.py``` data loader (3.2.2의 loader와 동일)
 
 ## 3.3 사용 방법
 ### 3.3.1 데이터 전처리
@@ -92,12 +95,14 @@ python preprocessing.py --type timewise --file_dir ./data/original --save_dir ./
 
 ### 3.3.2 Body-Action GNN 모델 학습
 ```
-python main.py --epoch 50 --root_dir ./data/timewise --mode conbarlow --barlow_epoch 30 --save_dir <save_directory> --exp_name <save_exp_name>
+python ./code/main_pretrain.py --epoch 50 --root_dir ./data/timewise --mode conbarlow --barlow_epoch 30 --save_dir <save_directory> --exp_name <save_exp_name>
 ```
 
 ### 3.3.3 Lifelog Segmentation 모델 학습
 ```
-python main_seg.py --epoch 50 --root_dir ./data/daywise/train --mode segmentation --save_dir <save_directory> --exp_name <save_exp_name>
+python ./code/main_seg.py --epoch 10 --root_dir ./data/daywise/train --mode segmentation --save_file_path <saved_pretrain_model_pth>
+# pretrained model/model로 돌리기
+python ./code/main-seg.py --epoch 10 --root_dir ./data/daywise/train --mode segmentation --save_file_path ./pretrained_model/model
 ```
 
 ## 4. Experiments
@@ -108,7 +113,7 @@ python main_seg.py --epoch 50 --root_dir ./data/daywise/train --mode segmentatio
 |MLP|0.24|0.19|
 |K-Means|0.13|0.04|
 |FINCH|0.20|0.14|
-|OURS|0.42|0.29|
+|OURS|0.39|0.28|
 
 
 
