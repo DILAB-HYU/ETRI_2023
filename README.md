@@ -24,7 +24,7 @@
 
 ## 3.2 파일 설명
 ### 3.2.1 전처리 ("./preprocess/")
-> ```preprocess/data_preprocess.py``` 데이터 전처리
+> ```data_preprocess.py``` 데이터 전처리
 >   - GNN 모델 학습을 위한 timewise data (--type timewise)
 >   - Segmentation 모델 학습을 위한 daywise data (--type daywise)
 > 
@@ -41,7 +41,7 @@
 > 
 > ```pretrain.py``` train 함수
 > 
-> ```main.py``` main 함수
+> ```main_pretrain.py``` main 함수
 > 
 
 ### 3.2.3 Lifelog Segmentation Model ("./code/")
