@@ -10,7 +10,6 @@ from sklearn.metrics import classification_report, confusion_matrix, f1_score, a
 
 import loader
 from gnn import Action_GNN, Body_GNN
-import barlow 
 from tmse import _GaussianSimilarityTMSE
 from torch.nn.utils import spectral_norm
 
@@ -43,7 +42,6 @@ class Pretrain(object):
         self.spt_lr = args.spt_lr
         self.p = args.p  
         self.lambda_b = 0.1
-        self.barlow_epoch = args.barlow_epoch
         self.pretrain_epoch = args.pretrain_epoch 
                
         self.train_loader = loader.dataloader(root_dir = self.train_dir,  batch_size = 1, mode = 'segmentation')
