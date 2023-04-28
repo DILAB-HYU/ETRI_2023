@@ -43,7 +43,7 @@
 > 
 > ```main_pretrain.py``` main 함수
 > 
-> ```loader.py``` data loader
+> ```barlow.py``` barlow loss
 
 ### 3.2.3 Lifelog Segmentation Model ("./code/")
 > ```segmentation_loader.py``` Segmentation loader (daywise data)
